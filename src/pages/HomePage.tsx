@@ -4,8 +4,6 @@ import { Card } from '../components/Card';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import GridLayout, { Layout } from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
 
 const STORAGE_KEY = 'dear23_widget_layout';
 
