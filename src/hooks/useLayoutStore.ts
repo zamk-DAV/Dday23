@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { WidgetLayout } from '../types';
+import type { WidgetLayout } from '../types';
 
 // Define layout types for different breakpoints
 interface LayoutState {
