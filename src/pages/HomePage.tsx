@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @ts-ignore
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import * as ReactGridLayout from 'react-grid-layout';
 import { useLayoutStore } from '../hooks/useLayoutStore';
 import type { WidgetLayout } from '../types';
 import { Card } from '../components/Card';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/grid-fix.css'; // Will create this to fix default styles
+
+// Robust import for both Vite (ESM) and Rollup (CJS)
+const RGL = ReactGridLayout.default || ReactGridLayout;
+const Responsive = RGL.Responsive;
+const WidthProvider = RGL.WidthProvider;
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
