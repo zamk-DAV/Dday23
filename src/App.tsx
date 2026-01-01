@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Layout } from './components/Layout';
 import { HomePage } from './pages/HomePage';
 import { AuthPage } from './features/auth/AuthPage';
@@ -22,11 +23,23 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-primary)]">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="w-12 h-12 bg-[var(--color-accent)] rounded-full mb-4" />
-          <span className="text-[var(--color-text-secondary)] font-medium">Loading Dear23...</span>
-        </div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-bg-primary gap-4">
+        <motion.div
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+        >
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--color-accent-pop)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+          </svg>
+        </motion.div>
+        <motion.span
+          initial={{ opacity: 0.5 }}
+          animate={{ opacity: 1 }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          className="text-text-secondary font-medium tracking-wide"
+        >
+          Loading Dear23...
+        </motion.span>
       </div>
     );
   }

@@ -1,5 +1,10 @@
-/* Global Reset & Base Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import './variables.css';
+
+/* Additional Global Styles */
 
 *,
 *::before,
