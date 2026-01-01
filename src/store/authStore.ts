@@ -54,7 +54,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
                 .from('profiles')
                 .select('*')
                 .eq('id', user.id)
-                .single();
+                .maybeSingle();
 
             // If no profile, it might be first login, waiting for trigger or manual insert?
             // Assuming profile is auto-created or we handle it in Onboarding.
@@ -65,7 +65,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
                 .from('couples')
                 .select('*')
                 .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
-                .single();
+                .maybeSingle();
 
             set({ profile, couple, loading: false });
         } catch (error) {
