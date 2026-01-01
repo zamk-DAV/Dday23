@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/Card';
 import { motion } from 'framer-motion';
@@ -17,11 +17,26 @@ const defaultLayout: Layout[] = [
 
 export const HomePage: React.FC = () => {
     const navigate = useNavigate();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [containerWidth, setContainerWidth] = useState(350);
     const [layout, setLayout] = useState<Layout[]>(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
         return saved ? JSON.parse(saved) : defaultLayout;
     });
     const [isEditing, setIsEditing] = useState(false);
+
+    // Measure container width on mount and resize
+    useEffect(() => {
+        const updateWidth = () => {
+            if (containerRef.current) {
+                setContainerWidth(containerRef.current.offsetWidth);
+            }
+        };
+
+        updateWidth();
+        window.addEventListener('resize', updateWidth);
+        return () => window.removeEventListener('resize', updateWidth);
+    }, []);
 
     const handleLayoutChange = (newLayout: Layout[]) => {
         setLayout(newLayout);
@@ -73,84 +88,86 @@ export const HomePage: React.FC = () => {
             </header>
 
             {/* Widget Grid */}
-            <div className="relative">
-                <GridLayout
-                    className="layout"
-                    layout={layout}
-                    cols={2}
-                    rowHeight={75}
-                    width={Math.min(window.innerWidth - 48, 600)}
-                    onLayoutChange={handleLayoutChange}
-                    isDraggable={isEditing}
-                    isResizable={isEditing}
-                    margin={[12, 12]}
-                    containerPadding={[0, 0]}
-                    useCSSTransforms={true}
-                >
-                    {/* Couple Status Widget */}
-                    <div key="couple">
-                        <WidgetCard
-                            onClick={() => !isEditing && navigate('/calendar')}
-                            isEditing={isEditing}
-                            className="h-full"
-                        >
-                            <div className="flex flex-col justify-center h-full p-6">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-accent" />
-                                    <span className="text-[10px] font-bold text-accent uppercase tracking-widest">Together</span>
+            <div ref={containerRef} className="relative">
+                {containerWidth > 0 && (
+                    <GridLayout
+                        className="layout"
+                        layout={layout}
+                        cols={2}
+                        rowHeight={75}
+                        width={containerWidth}
+                        onLayoutChange={handleLayoutChange}
+                        isDraggable={isEditing}
+                        isResizable={isEditing}
+                        margin={[12, 12]}
+                        containerPadding={[0, 0]}
+                        useCSSTransforms={true}
+                    >
+                        {/* Couple Status Widget */}
+                        <div key="couple">
+                            <WidgetCard
+                                onClick={() => !isEditing && navigate('/calendar')}
+                                isEditing={isEditing}
+                                className="h-full"
+                            >
+                                <div className="flex flex-col justify-center h-full p-6">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                        <span className="text-[10px] font-bold text-accent uppercase tracking-widest">Together</span>
+                                    </div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-4xl font-semibold text-text-primary">D+23</span>
+                                        <span className="text-text-secondary text-xs">2026.01.01</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-4xl font-semibold text-text-primary">D+23</span>
-                                    <span className="text-text-secondary text-xs">2026.01.01</span>
-                                </div>
-                            </div>
-                        </WidgetCard>
-                    </div>
+                            </WidgetCard>
+                        </div>
 
-                    {/* Chat Widget */}
-                    <div key="chat">
-                        <WidgetCard
-                            onClick={() => !isEditing && navigate('/chat')}
-                            isEditing={isEditing}
-                            className="h-full"
-                        >
-                            <WidgetContent icon="💬" label="채팅" sub="0개 안읽음" />
-                        </WidgetCard>
-                    </div>
+                        {/* Chat Widget */}
+                        <div key="chat">
+                            <WidgetCard
+                                onClick={() => !isEditing && navigate('/chat')}
+                                isEditing={isEditing}
+                                className="h-full"
+                            >
+                                <WidgetContent icon="💬" label="채팅" sub="0개 안읽음" />
+                            </WidgetCard>
+                        </div>
 
-                    {/* Feed Widget */}
-                    <div key="feed">
-                        <WidgetCard
-                            onClick={() => !isEditing && navigate('/feed')}
-                            isEditing={isEditing}
-                            className="h-full"
-                        >
-                            <WidgetContent icon="📸" label="피드" sub="새 이야기" />
-                        </WidgetCard>
-                    </div>
+                        {/* Feed Widget */}
+                        <div key="feed">
+                            <WidgetCard
+                                onClick={() => !isEditing && navigate('/feed')}
+                                isEditing={isEditing}
+                                className="h-full"
+                            >
+                                <WidgetContent icon="📸" label="피드" sub="새 이야기" />
+                            </WidgetCard>
+                        </div>
 
-                    {/* Diary Widget */}
-                    <div key="diary">
-                        <WidgetCard
-                            onClick={() => !isEditing && navigate('/diary')}
-                            isEditing={isEditing}
-                            className="h-full"
-                        >
-                            <WidgetContent icon="📔" label="일기" sub="오늘의 편지" />
-                        </WidgetCard>
-                    </div>
+                        {/* Diary Widget */}
+                        <div key="diary">
+                            <WidgetCard
+                                onClick={() => !isEditing && navigate('/diary')}
+                                isEditing={isEditing}
+                                className="h-full"
+                            >
+                                <WidgetContent icon="📔" label="일기" sub="오늘의 편지" />
+                            </WidgetCard>
+                        </div>
 
-                    {/* Settings Widget */}
-                    <div key="settings">
-                        <WidgetCard
-                            onClick={() => !isEditing && navigate('/settings')}
-                            isEditing={isEditing}
-                            className="h-full"
-                        >
-                            <WidgetContent icon="⚙️" label="설정" sub="관리" />
-                        </WidgetCard>
-                    </div>
-                </GridLayout>
+                        {/* Settings Widget */}
+                        <div key="settings">
+                            <WidgetCard
+                                onClick={() => !isEditing && navigate('/settings')}
+                                isEditing={isEditing}
+                                className="h-full"
+                            >
+                                <WidgetContent icon="⚙️" label="설정" sub="관리" />
+                            </WidgetCard>
+                        </div>
+                    </GridLayout>
+                )}
 
                 {isEditing && (
                     <div className="absolute inset-0 pointer-events-none border-2 border-dashed border-accent/30 rounded-2xl" />
