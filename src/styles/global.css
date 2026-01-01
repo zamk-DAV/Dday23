@@ -1,0 +1,86 @@
+/* Global Reset & Base Styles */
+@import './variables.css';
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+}
+
+/* PWA / Mobile Tweaks */
+body {
+    touch-action: manipulation;
+    /* Improve touch response */
+    overscroll-behavior-y: none;
+    /* Prevent pull-to-refresh on body (handled by gesture lib) */
+    -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    isolation: isolate;
+    /* Create new stacking context */
+}
+
+/* Custom Scrollbar (Subtle & rounded) */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-text-placeholder);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-secondary);
+}
+
+/* Utilities */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.squircle {
+    border-radius: var(--radius-md);
+    /* Smooth approximation */
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

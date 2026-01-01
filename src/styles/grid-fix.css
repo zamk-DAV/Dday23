@@ -1,0 +1,21 @@
+.react-grid-item.react-grid-placeholder {
+    background: var(--color-accent) !important;
+    opacity: 0.3 !important;
+    border-radius: var(--radius-md) !important;
+}
+
+.react-grid-item>.react-resizable-handle {
+    width: 20px;
+    height: 20px;
+}
+
+.react-grid-item>.react-resizable-handle::after {
+    content: '';
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    width: 5px;
+    height: 5px;
+    border-right: 2px solid var(--color-text-placeholder);
+    border-bottom: 2px solid var(--color-text-placeholder);
+}
