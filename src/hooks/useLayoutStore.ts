@@ -1,15 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-// Local definition to avoid type issues with library exports
-export interface WidgetLayout {
-    i: string;
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-    static?: boolean;
-}
+import { WidgetLayout } from '../types';
 
 // Define layout types for different breakpoints
 interface LayoutState {

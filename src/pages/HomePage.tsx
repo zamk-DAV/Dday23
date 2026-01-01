@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 // @ts-ignore
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { useLayoutStore } from '../hooks/useLayoutStore';
-import type { WidgetLayout } from '../hooks/useLayoutStore';
+import type { WidgetLayout } from '../types';
 import { Card } from '../components/Card';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
