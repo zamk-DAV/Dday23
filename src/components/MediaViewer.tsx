@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { useDrag } from 'react-use-gesture';
+import { useDrag } from '@use-gesture/react';
 import { BsX, BsDownload, BsShare, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { Button } from './Button';
 
