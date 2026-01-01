@@ -1,138 +1,202 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/Card';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
+import GridLayout, { Layout } from 'react-grid-layout';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 
-const container = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
-};
+const STORAGE_KEY = 'dear23_widget_layout';
 
-const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 }
-};
+const defaultLayout: Layout[] = [
+    { i: 'couple', x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 },
+    { i: 'chat', x: 0, y: 2, w: 1, h: 2, minW: 1, minH: 2 },
+    { i: 'feed', x: 1, y: 2, w: 1, h: 2, minW: 1, minH: 2 },
+    { i: 'diary', x: 0, y: 4, w: 1, h: 2, minW: 1, minH: 2 },
+    { i: 'settings', x: 1, y: 4, w: 1, h: 2, minW: 1, minH: 2 },
+];
 
 export const HomePage: React.FC = () => {
     const navigate = useNavigate();
+    const [layout, setLayout] = useState<Layout[]>(() => {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : defaultLayout;
+    });
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleLayoutChange = (newLayout: Layout[]) => {
+        setLayout(newLayout);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newLayout));
+    };
+
+    const resetLayout = () => {
+        setLayout(defaultLayout);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultLayout));
+    };
 
     return (
-        <div className="w-full min-h-screen space-y-10 bg-transparent">
-            {/* Sentimental Greeting Header */}
+        <div className="w-full min-h-screen space-y-6 bg-transparent">
+            {/* Header */}
             <header className="flex justify-between items-end px-2">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <h2 className="text-3xl font-serif text-text-primary tracking-tight leading-tight">
-                        반가워요, <span className="opacity-60 italic">User</span>
+                    <h2 className="text-3xl font-semibold text-text-primary tracking-tight leading-tight">
+                        반가워요
                     </h2>
-                    <p className="text-text-secondary/60 text-[11px] font-medium tracking-[0.3em] uppercase mt-2">
+                    <p className="text-text-secondary text-xs mt-1">
                         우리의 기록이 쌓이는 중
                     </p>
                 </motion.div>
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="w-12 h-12 rounded-full bg-accent/10 border border-accent/20 p-1 relative group cursor-pointer"
-                >
-                    <div className="absolute inset-0 bg-accent rounded-full blur-md opacity-0 group-hover:opacity-20 transition-opacity" />
-                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" alt="Avatar" className="relative z-10 rounded-full" />
-                </motion.div>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => setIsEditing(!isEditing)}
+                        className={clsx(
+                            "px-3 py-1.5 rounded-lg text-xs transition-colors",
+                            isEditing
+                                ? "bg-accent text-bg-primary"
+                                : "bg-bg-secondary text-text-secondary hover:text-text-primary"
+                        )}
+                    >
+                        {isEditing ? '완료' : '편집'}
+                    </button>
+                    {isEditing && (
+                        <button
+                            onClick={resetLayout}
+                            className="px-3 py-1.5 rounded-lg text-xs bg-bg-secondary text-text-secondary hover:text-text-primary transition-colors"
+                        >
+                            초기화
+                        </button>
+                    )}
+                </div>
             </header>
 
-            {/* Dashboard Grid */}
-            <motion.div
-                variants={container}
-                initial="hidden"
-                animate="show"
-                className="grid grid-cols-2 gap-5"
-            >
-                {/* Main Widget: Couple Status (Large Card) */}
-                <motion.div variants={item} className="col-span-2">
-                    <Card variant="glass" className="p-8 relative overflow-hidden group cursor-pointer border-accent/10" onClick={() => navigate('/calendar')}>
-                        {/* Decorative Background Symbol */}
-                        <div className="absolute -top-4 -right-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity scale-150 rotate-12">
-                            <span className="text-8xl">❤️</span>
-                        </div>
-
-                        <div className="relative z-10 space-y-4">
-                            <div className="flex items-center gap-2">
-                                <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                                <h3 className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">Loving Together</h3>
+            {/* Widget Grid */}
+            <div className="relative">
+                <GridLayout
+                    className="layout"
+                    layout={layout}
+                    cols={2}
+                    rowHeight={75}
+                    width={Math.min(window.innerWidth - 48, 600)}
+                    onLayoutChange={handleLayoutChange}
+                    isDraggable={isEditing}
+                    isResizable={isEditing}
+                    margin={[12, 12]}
+                    containerPadding={[0, 0]}
+                    useCSSTransforms={true}
+                >
+                    {/* Couple Status Widget */}
+                    <div key="couple">
+                        <WidgetCard
+                            onClick={() => !isEditing && navigate('/calendar')}
+                            isEditing={isEditing}
+                            className="h-full"
+                        >
+                            <div className="flex flex-col justify-center h-full p-6">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                    <span className="text-[10px] font-bold text-accent uppercase tracking-widest">Together</span>
+                                </div>
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-4xl font-semibold text-text-primary">D+23</span>
+                                    <span className="text-text-secondary text-xs">2026.01.01</span>
+                                </div>
                             </div>
+                        </WidgetCard>
+                    </div>
 
-                            <div className="flex items-baseline gap-3">
-                                <span className="text-5xl font-serif text-text-primary tracking-tighter">D+23</span>
-                                <span className="text-text-secondary/40 text-[10px] font-medium tracking-widest uppercase">
-                                    since 2026.01.01
-                                </span>
-                            </div>
+                    {/* Chat Widget */}
+                    <div key="chat">
+                        <WidgetCard
+                            onClick={() => !isEditing && navigate('/chat')}
+                            isEditing={isEditing}
+                            className="h-full"
+                        >
+                            <WidgetContent icon="💬" label="채팅" sub="0개 안읽음" />
+                        </WidgetCard>
+                    </div>
 
-                            {/* Visual Progress Line */}
-                            <div className="w-full h-[1px] bg-text-primary/5 relative">
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: '40%' }}
-                                    className="absolute inset-y-0 left-0 bg-accent/40 shadow-[0_0_8px_var(--color-accent)]"
-                                    transition={{ duration: 1.5, delay: 0.5 }}
-                                />
-                            </div>
-                        </div>
-                    </Card>
-                </motion.div>
+                    {/* Feed Widget */}
+                    <div key="feed">
+                        <WidgetCard
+                            onClick={() => !isEditing && navigate('/feed')}
+                            isEditing={isEditing}
+                            className="h-full"
+                        >
+                            <WidgetContent icon="📸" label="피드" sub="새 이야기" />
+                        </WidgetCard>
+                    </div>
 
-                {/* Grid Widgets (Themed & Balanced) */}
-                <HomeWidget
-                    icon="💬"
-                    label="Chat"
-                    sub="0 unread"
-                    onClick={() => navigate('/chat')}
-                    color="bg-blue-400/5 text-blue-400"
-                />
-                <HomeWidget
-                    icon="📸"
-                    label="Feed"
-                    sub="New stories"
-                    onClick={() => navigate('/feed')}
-                    color="bg-emerald-400/5 text-emerald-400"
-                />
-                <HomeWidget
-                    icon="📔"
-                    label="Diary"
-                    sub="Letter to you"
-                    onClick={() => navigate('/diary')}
-                    color="bg-rose-400/5 text-rose-400"
-                />
-                <HomeWidget
-                    icon="⚙️"
-                    label="Settings"
-                    sub="Manage"
-                    onClick={() => navigate('/settings')}
-                    color="bg-zinc-400/5 text-zinc-400"
-                />
-            </motion.div>
+                    {/* Diary Widget */}
+                    <div key="diary">
+                        <WidgetCard
+                            onClick={() => !isEditing && navigate('/diary')}
+                            isEditing={isEditing}
+                            className="h-full"
+                        >
+                            <WidgetContent icon="📔" label="일기" sub="오늘의 편지" />
+                        </WidgetCard>
+                    </div>
+
+                    {/* Settings Widget */}
+                    <div key="settings">
+                        <WidgetCard
+                            onClick={() => !isEditing && navigate('/settings')}
+                            isEditing={isEditing}
+                            className="h-full"
+                        >
+                            <WidgetContent icon="⚙️" label="설정" sub="관리" />
+                        </WidgetCard>
+                    </div>
+                </GridLayout>
+
+                {isEditing && (
+                    <div className="absolute inset-0 pointer-events-none border-2 border-dashed border-accent/30 rounded-2xl" />
+                )}
+            </div>
+
+            {isEditing && (
+                <p className="text-center text-xs text-text-secondary">
+                    위젯을 드래그하여 위치를 변경하세요
+                </p>
+            )}
         </div>
     );
 };
 
-const HomeWidget = ({ icon, label, sub, onClick, color }: any) => (
-    <motion.div variants={item} onClick={onClick} className="cursor-pointer group">
-        <Card variant="glass" className="h-[150px] flex flex-col justify-between p-6 group-hover:border-accent/30 group-active:scale-[0.98]">
-            <div className={clsx("w-10 h-10 rounded-2xl flex items-center justify-center text-xl shadow-sm transition-all group-hover:scale-110", color)}>
-                {icon}
-            </div>
-            <div className="space-y-1">
-                <span className="block font-serif text-text-primary text-xl tracking-tight">{label}</span>
-                <span className="block text-[9px] text-text-secondary/40 font-bold uppercase tracking-widest">{sub}</span>
-            </div>
-        </Card>
-    </motion.div>
+const WidgetCard = ({
+    children,
+    onClick,
+    isEditing,
+    className
+}: {
+    children: React.ReactNode;
+    onClick: () => void;
+    isEditing: boolean;
+    className?: string;
+}) => (
+    <div
+        onClick={onClick}
+        className={clsx(
+            "bg-bg-secondary rounded-2xl transition-all cursor-pointer h-full",
+            isEditing ? "ring-2 ring-accent/50 cursor-move" : "hover:bg-bg-secondary/80 active:scale-[0.98]",
+            className
+        )}
+    >
+        {children}
+    </div>
+);
+
+const WidgetContent = ({ icon, label, sub }: { icon: string; label: string; sub: string }) => (
+    <div className="flex flex-col justify-between h-full p-5">
+        <span className="text-2xl">{icon}</span>
+        <div>
+            <span className="block text-text-primary font-medium">{label}</span>
+            <span className="block text-xs text-text-secondary">{sub}</span>
+        </div>
+    </div>
 );

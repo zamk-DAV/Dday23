@@ -1,0 +1,4 @@
+﻿      "args": [
+        "-y",
+        "@modelcontextprotocol/server-playwright"
+      ],
