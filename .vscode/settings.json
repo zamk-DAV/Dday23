@@ -1,0 +1,19 @@
+{
+  "mcp.servers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "env": {
+        "PLAYWRIGHT_BROWSERS_PATH": "0"
+      }
+    }
+  },
+  "playwright.reuseBrowser": false,
+  "playwright.showTrace": false
+}
+
+
+
