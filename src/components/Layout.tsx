@@ -9,97 +9,99 @@ export const Layout: React.FC = () => {
     const location = useLocation();
 
     return (
-        <div className="min-h-screen w-full flex flex-col bg-bg-primary font-base">
+        <div className="min-h-screen w-full flex flex-col bg-bg-primary transition-colors duration-1000 font-base relative overflow-x-hidden">
+            {/* Ambient Background Blur (Subtle Global) */}
+            <div className="fixed top-[-10%] right-[-5%] w-[40%] h-[40%] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+            <div className="fixed bottom-[-10%] left-[-5%] w-[40%] h-[40%] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+
             {/* Top Navigation Bar */}
-            <header className="sticky top-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-md bg-white/70 border-b border-black/5">
+            <header className="sticky top-0 z-50 px-6 py-5 flex items-center justify-between backdrop-blur-xl bg-bg-primary/40 border-b border-text-primary/5 transition-all duration-700">
                 <motion.h1
                     onClick={() => navigate('/')}
-                    className="text-2xl font-bold bg-gradient-to-r from-accent-pop to-accent bg-clip-text text-transparent cursor-pointer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="text-2xl font-serif text-text-primary cursor-pointer tracking-tight"
+                    whileHover={{ opacity: 0.8 }}
+                    whileTap={{ scale: 0.98 }}
                 >
                     Dear23
                 </motion.h1>
                 <div className="flex gap-4">
                     <button
                         onClick={() => navigate('/settings')}
-                        className="p-2 hover:bg-black/5 rounded-full transition-colors text-text-secondary"
+                        className="p-2.5 hover:bg-text-primary/5 rounded-2xl transition-all text-text-secondary/60 hover:text-text-primary group"
                     >
-                        <Settings size={20} />
+                        <Settings size={20} className="transition-transform group-hover:rotate-12" />
                     </button>
                 </div>
             </header>
 
             {/* Main Content Area */}
-            <main className="flex-1 w-full max-w-4xl mx-auto p-4 pb-32">
+            <main className="flex-1 w-full max-w-2xl mx-auto px-6 py-8 pb-40">
                 <Outlet />
             </main>
 
-            {/* Bottom Tab Navigation */}
-            <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md backdrop-blur-xl bg-white/80 border border-white shadow-float rounded-full px-4 py-2">
-                <div className="flex justify-around items-center">
-                    <NavItem
-                        icon={<Home size={22} />}
-                        label="Home"
-                        active={location.pathname === '/'}
-                        onClick={() => navigate('/')}
-                    />
-                    <NavItem
-                        icon={<MessageCircle size={22} />}
-                        label="Chat"
-                        active={location.pathname.startsWith('/chat')}
-                        onClick={() => navigate('/chat')}
-                    />
-                    <NavItem
-                        icon={<Image size={22} />}
-                        label="Feed"
-                        active={location.pathname.startsWith('/feed')}
-                        onClick={() => navigate('/feed')}
-                    />
-                    <NavItem
-                        icon={<Book size={22} />}
-                        label="Diary"
-                        active={location.pathname.startsWith('/diary')}
-                        onClick={() => navigate('/diary')}
-                    />
-                    <NavItem
-                        icon={<Calendar size={22} />}
-                        label="Cal"
-                        active={location.pathname.startsWith('/calendar')}
-                        onClick={() => navigate('/calendar')}
-                    />
-                </div>
-            </nav>
+            {/* Bottom Tab Navigation (Floating Glass Pill) */}
+            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm">
+                <nav className="backdrop-blur-2xl bg-bg-primary/60 border border-text-primary/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-[32px] px-6 py-3 transition-colors duration-700">
+                    <div className="flex justify-between items-center">
+                        <NavItem
+                            icon={<Home size={22} />}
+                            active={location.pathname === '/'}
+                            onClick={() => navigate('/')}
+                        />
+                        <NavItem
+                            icon={<MessageCircle size={22} />}
+                            active={location.pathname.startsWith('/chat')}
+                            onClick={() => navigate('/chat')}
+                        />
+                        <NavItem
+                            icon={<Image size={22} />}
+                            active={location.pathname.startsWith('/feed')}
+                            onClick={() => navigate('/feed')}
+                        />
+                        <NavItem
+                            icon={<Book size={22} />}
+                            active={location.pathname.startsWith('/diary')}
+                            onClick={() => navigate('/diary')}
+                        />
+                        <NavItem
+                            icon={<Calendar size={22} />}
+                            active={location.pathname.startsWith('/calendar')}
+                            onClick={() => navigate('/calendar')}
+                        />
+                    </div>
+                </nav>
+            </div>
+
+            {/* Grainy Texture (Global) */}
+            <div className="fixed inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ filter: 'url(#grainy)' }} />
         </div>
     );
 };
 
-const NavItem = ({ icon, label, active, onClick }: {
+const NavItem = ({ icon, active, onClick }: {
     icon: React.ReactNode;
-    label: string;
     active: boolean;
     onClick: () => void
 }) => (
     <button
         onClick={onClick}
         className={clsx(
-            "relative flex flex-col items-center gap-1 p-2 transition-all duration-300",
-            active ? "text-accent-pop scale-110" : "text-text-placeholder hover:text-text-secondary"
+            "relative p-3 transition-all duration-500 rounded-2xl overflow-hidden group",
+            active ? "text-text-primary bg-text-primary/5" : "text-text-secondary/40 hover:text-text-secondary"
         )}
     >
         {active && (
             <motion.div
-                layoutId="nav-active"
-                className="absolute inset-x-0 -bottom-1 h-1 bg-accent-pop rounded-full mx-4"
-                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                layoutId="nav-glow"
+                className="absolute inset-0 bg-accent/20 blur-lg rounded-full"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
             />
         )}
         <div className={clsx(
-            "transition-all duration-300",
-            active ? "drop-shadow-[0_0_8px_rgba(255,158,170,0.5)]" : ""
+            "relative z-10 transition-all duration-300",
+            active ? "drop-shadow-[0_0_10px_var(--color-accent)]" : "group-hover:scale-110"
         )}>
             {icon}
         </div>
-        <span className="text-[10px] font-bold tracking-tighter uppercase">{label}</span>
     </button>
 );

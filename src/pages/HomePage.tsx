@@ -22,15 +22,29 @@ export const HomePage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="w-full min-h-screen p-6 pb-24 space-y-8 bg-bg-primary overflow-x-hidden">
-            <header className="flex justify-between items-end">
-                <div>
-                    <h2 className="text-3xl font-bold text-text-primary tracking-tight">Hello, <span className="text-accent-pop">User</span></h2>
-                    <p className="text-text-secondary mt-1">Welcome to your space</p>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-accent-pop/20 border-2 border-accent-pop p-0.5">
-                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" alt="Avatar" className="rounded-full" />
-                </div>
+        <div className="w-full min-h-screen space-y-10 bg-transparent">
+            {/* Sentimental Greeting Header */}
+            <header className="flex justify-between items-end px-2">
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <h2 className="text-3xl font-serif text-text-primary tracking-tight leading-tight">
+                        반가워요, <span className="opacity-60 italic">User</span>
+                    </h2>
+                    <p className="text-text-secondary/60 text-[11px] font-medium tracking-[0.3em] uppercase mt-2">
+                        우리의 기록이 쌓이는 중
+                    </p>
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="w-12 h-12 rounded-full bg-accent/10 border border-accent/20 p-1 relative group cursor-pointer"
+                >
+                    <div className="absolute inset-0 bg-accent rounded-full blur-md opacity-0 group-hover:opacity-20 transition-opacity" />
+                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" alt="Avatar" className="relative z-10 rounded-full" />
+                </motion.div>
             </header>
 
             {/* Dashboard Grid */}
@@ -38,75 +52,86 @@ export const HomePage: React.FC = () => {
                 variants={container}
                 initial="hidden"
                 animate="show"
-                className="grid grid-cols-2 gap-4"
+                className="grid grid-cols-2 gap-5"
             >
-                {/* Main Widget: Couple Status */}
+                {/* Main Widget: Couple Status (Large Card) */}
                 <motion.div variants={item} className="col-span-2">
-                    <Card variant="glass" className="p-6 relative overflow-hidden group hover:shadow-float transition-shadow cursor-pointer" onClick={() => navigate('/calendar')}>
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <span className="text-6xl">❤️</span>
+                    <Card variant="glass" className="p-8 relative overflow-hidden group cursor-pointer border-accent/10" onClick={() => navigate('/calendar')}>
+                        {/* Decorative Background Symbol */}
+                        <div className="absolute -top-4 -right-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity scale-150 rotate-12">
+                            <span className="text-8xl">❤️</span>
                         </div>
-                        <h3 className="text-sm font-semibold text-accent-pop uppercase tracking-wider">Loving You</h3>
-                        <div className="mt-2 flex items-baseline gap-2">
-                            <span className="text-4xl font-bold text-text-primary">D+23</span>
-                            <span className="text-text-secondary text-sm">since 2026.01.01</span>
+
+                        <div className="relative z-10 space-y-4">
+                            <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                                <h3 className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">Loving Together</h3>
+                            </div>
+
+                            <div className="flex items-baseline gap-3">
+                                <span className="text-5xl font-serif text-text-primary tracking-tighter">D+23</span>
+                                <span className="text-text-secondary/40 text-[10px] font-medium tracking-widest uppercase">
+                                    since 2026.01.01
+                                </span>
+                            </div>
+
+                            {/* Visual Progress Line */}
+                            <div className="w-full h-[1px] bg-text-primary/5 relative">
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: '40%' }}
+                                    className="absolute inset-y-0 left-0 bg-accent/40 shadow-[0_0_8px_var(--color-accent)]"
+                                    transition={{ duration: 1.5, delay: 0.5 }}
+                                />
+                            </div>
                         </div>
                     </Card>
                 </motion.div>
 
-                {/* Chat Widget */}
-                <motion.div variants={item} onClick={() => navigate('/chat')} className="cursor-pointer">
-                    <Card variant="default" className="h-40 flex flex-col justify-between p-4 bg-white/60 hover:bg-white transition-colors border-none shadow-sm hover:shadow-md">
-                        <div className="p-2 bg-blue-100 w-fit rounded-xl text-blue-500">
-                            <span className="text-2xl">💬</span>
-                        </div>
-                        <div>
-                            <span className="block font-bold text-text-primary text-lg">Chat</span>
-                            <span className="text-xs text-text-secondary">0 unread</span>
-                        </div>
-                    </Card>
-                </motion.div>
-
-                {/* Feed Widget */}
-                <motion.div variants={item} onClick={() => navigate('/feed')} className="cursor-pointer">
-                    <Card variant="default" className="h-40 flex flex-col justify-between p-4 bg-white/60 hover:bg-white transition-colors border-none shadow-sm hover:shadow-md">
-                        <div className="p-2 bg-green-100 w-fit rounded-xl text-green-500">
-                            <span className="text-2xl">📸</span>
-                        </div>
-                        <div>
-                            <span className="block font-bold text-text-primary text-lg">Feed</span>
-                            <span className="text-xs text-text-secondary">New updates</span>
-                        </div>
-                    </Card>
-                </motion.div>
-
-                {/* Diary Widget */}
-                <motion.div variants={item} onClick={() => navigate('/diary')} className="cursor-pointer">
-                    <Card variant="default" className="h-40 flex flex-col justify-between p-4 bg-white/60 hover:bg-white transition-colors border-none shadow-sm hover:shadow-md">
-                        <div className="p-2 bg-pink-100 w-fit rounded-xl text-pink-500">
-                            <span className="text-2xl">📔</span>
-                        </div>
-                        <div>
-                            <span className="block font-bold text-text-primary text-lg">Diary</span>
-                            <span className="text-xs text-text-secondary">Write today</span>
-                        </div>
-                    </Card>
-                </motion.div>
-
-                {/* Settings Widget */}
-                <motion.div variants={item} onClick={() => navigate('/settings')} className="cursor-pointer">
-                    <Card variant="default" className="h-40 flex flex-col justify-between p-4 bg-white/60 hover:bg-white transition-colors border-none shadow-sm hover:shadow-md">
-                        <div className="p-2 bg-gray-100 w-fit rounded-xl text-gray-500">
-                            <span className="text-2xl">⚙️</span>
-                        </div>
-                        <div>
-                            <span className="block font-bold text-text-primary text-lg">Settings</span>
-                            <span className="text-xs text-text-secondary">Manage app</span>
-                        </div>
-                    </Card>
-                </motion.div>
-
+                {/* Grid Widgets (Themed & Balanced) */}
+                <HomeWidget
+                    icon="💬"
+                    label="Chat"
+                    sub="0 unread"
+                    onClick={() => navigate('/chat')}
+                    color="bg-blue-400/5 text-blue-400"
+                />
+                <HomeWidget
+                    icon="📸"
+                    label="Feed"
+                    sub="New stories"
+                    onClick={() => navigate('/feed')}
+                    color="bg-emerald-400/5 text-emerald-400"
+                />
+                <HomeWidget
+                    icon="📔"
+                    label="Diary"
+                    sub="Letter to you"
+                    onClick={() => navigate('/diary')}
+                    color="bg-rose-400/5 text-rose-400"
+                />
+                <HomeWidget
+                    icon="⚙️"
+                    label="Settings"
+                    sub="Manage"
+                    onClick={() => navigate('/settings')}
+                    color="bg-zinc-400/5 text-zinc-400"
+                />
             </motion.div>
         </div>
     );
 };
+
+const HomeWidget = ({ icon, label, sub, onClick, color }: any) => (
+    <motion.div variants={item} onClick={onClick} className="cursor-pointer group">
+        <Card variant="glass" className="h-[150px] flex flex-col justify-between p-6 group-hover:border-accent/30 group-active:scale-[0.98]">
+            <div className={clsx("w-10 h-10 rounded-2xl flex items-center justify-center text-xl shadow-sm transition-all group-hover:scale-110", color)}>
+                {icon}
+            </div>
+            <div className="space-y-1">
+                <span className="block font-serif text-text-primary text-xl tracking-tight">{label}</span>
+                <span className="block text-[9px] text-text-secondary/40 font-bold uppercase tracking-widest">{sub}</span>
+            </div>
+        </Card>
+    </motion.div>
+);

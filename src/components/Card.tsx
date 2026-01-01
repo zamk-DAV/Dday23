@@ -19,9 +19,10 @@ export const Card: React.FC<CardProps> = ({
     const baseStyles = 'rounded-[20px] overflow-hidden transition-all duration-300';
 
     const variants = {
-        default: 'bg-white shadow-sm border border-[rgba(0,0,0,0.02)]',
-        glass: 'glass shadow-float',
-        flat: 'bg-[var(--color-bg-secondary)]'
+        default: 'bg-bg-primary border border-text-primary/5 shadow-sm',
+        glass: 'backdrop-blur-xl bg-bg-primary/40 border border-text-primary/10 shadow-[0_8px_32px_rgba(0,0,0,0.04)]',
+        flat: 'bg-bg-secondary border-none',
+        glow: 'bg-bg-primary border-[1.5px] border-accent/20 shadow-[0_0_20px_var(--color-accent)]/10',
     };
 
     const paddings = {

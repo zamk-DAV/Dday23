@@ -1,55 +1,125 @@
 :root {
-  /* Warm & Cozy Palette */
-  --color-bg-primary: #FDFBF7; /* Creamy White */
-  --color-bg-secondary: #F7EFE5; /* Latte Beige */
-  --color-bg-tertiary: #FFF0F5; /* Soft Blush */
-
-  --color-text-primary: #4A4A4A; /* Soft Charcoal */
+  /* Default: Warm & Cozy (Original) */
+  --color-bg-primary: #FDFBF7;
+  --color-bg-secondary: #F7EFE5;
+  --color-bg-tertiary: #FFF0F5;
+  --color-text-primary: #4A4A4A;
   --color-text-secondary: #8C8C8C;
   --color-text-placeholder: #C4C4C4;
-
-  --color-accent: #E8D3C8; /* Muted Peach */
-  --color-accent-pop: #FF9EAA; /* Pastel Pink - Highlights */
-  --color-success: #A8E6CF; /* Pastel Mint */
-  --color-error: #FFD3B6; /* Pastel Coral */
-
-  /* Shadows (Soft & Diffused) */
+  --color-accent: #E8D3C8;
+  --color-accent-pop: #FF9EAA;
+  --color-success: #A8E6CF;
+  --color-error: #FFD3B6;
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
   --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.08);
-
-  /* Radius (Roundedness) */
   --radius-sm: 12px;
   --radius-md: 20px;
   --radius-lg: 32px;
-  --radius-full: 9999px; /* Pill/Circle */
-
-  /* Spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-
-  /* Typography */
+  --radius-full: 9999px;
   --font-family-base: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 20px;
-  --font-size-xl: 24px;
-
-  /* Animations */
-  --transition-fast: 0.2s cubic-bezier(0.2, 0, 0, 1);
-  --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --font-family-serif: 'Playfair Display', serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg-primary: #2C2C2E; /* Charcoal */
-    --color-bg-secondary: #1C1C1E; /* Deep Dark */
-    --color-text-primary: #F2F2F7;
-    --color-text-secondary: #AEAEB2;
-    /* Adjust accents for dark mode visibility if needed */
-  }
+/* --- THEMES --- */
+
+[data-theme="moonlight"] {
+  --color-bg-primary: #1A1A2E;
+  --color-bg-secondary: #16213E;
+  --color-bg-tertiary: #1B1B2F;
+  --color-text-primary: #F4F4F4;
+  --color-text-secondary: #A2A2AD;
+  --color-text-placeholder: #4E4E6A;
+  --color-accent: #FAE392;
+  /* Moon Yellow */
+  --color-accent-pop: #FF9EAA;
+  --font-family-base: var(--font-family-serif);
+}
+
+[data-theme="apple"] {
+  --color-bg-primary: #F7E6CD;
+  --color-bg-secondary: #EDD6BD;
+  --color-text-primary: #6B2838;
+  --color-text-secondary: #A05868;
+  --color-accent: #8B3A4A;
+}
+
+[data-theme="forest"] {
+  --color-bg-primary: #fefefe;
+  --color-bg-secondary: #f5f5f5;
+  --color-text-primary: #3E4D37;
+  --color-text-secondary: #6B7C62;
+  --color-accent: #5A6B51;
+}
+
+[data-theme="clay"] {
+  --color-bg-primary: #fefefe;
+  --color-bg-secondary: #f5f5f5;
+  --color-text-primary: #4E4042;
+  --color-text-secondary: #8E8082;
+  --color-accent: #6E6062;
+}
+
+[data-theme="cat"] {
+  --color-bg-primary: #fefefe;
+  --color-bg-secondary: #f5f5f5;
+  --color-text-primary: #5B4845;
+  --color-text-secondary: #AB9895;
+  --color-accent: #8B7875;
+}
+
+[data-theme="morning"] {
+  --color-bg-primary: #FFFCF6;
+  --color-bg-secondary: #F5ECE6;
+  --color-text-primary: #7A5B45;
+  --color-text-secondary: #BA8B75;
+  --color-accent: #AA7B65;
+}
+
+[data-theme="pastel"] {
+  --color-bg-primary: #FEFCF8;
+  --color-bg-secondary: #F4ECE8;
+  --color-text-primary: #5A6270;
+  --color-text-secondary: #AAB2C0;
+  --color-accent: #8A92A0;
+}
+
+[data-theme="milktea"] {
+  --color-bg-primary: #FFFDF6;
+  --color-bg-secondary: #F5EDE6;
+  --color-text-primary: #2C3352;
+  --color-text-secondary: #5C5E7D;
+  --color-accent: #3C4362;
+}
+
+[data-theme="modern"] {
+  --color-bg-primary: #323841;
+  --color-bg-secondary: #2a2a2a;
+  --color-text-primary: #F6F2EE;
+  --color-text-secondary: #CACBCD;
+  --color-accent: #B3B9C1;
+}
+
+[data-theme="grayscale"] {
+  --color-bg-primary: #262a29;
+  --color-bg-secondary: #1e2120;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #dfdfdf;
+  --color-accent: #dfdfdf;
+}
+
+[data-theme="everest"] {
+  --color-bg-primary: #252330;
+  --color-bg-secondary: #1d1b28;
+  --color-text-primary: #f5f9f8;
+  --color-text-secondary: #a1a2ab;
+  --color-accent: #a1a2ab;
+}
+
+[data-theme="dark"] {
+  --color-bg-primary: #121212;
+  --color-bg-secondary: #1e1e1e;
+  --color-text-primary: #E1E1E1;
+  --color-text-secondary: #9E9E9E;
+  --color-accent: #BB86FC;
 }
